@@ -1,0 +1,41 @@
+version: "3.1"
+services:
+  mongo1:
+    restart: always
+    image: mongo:4.4
+    container_name: mongo1
+    expose:
+      - "27017"
+    ports:
+      - "27020:27017"
+    volumes:
+      - ./mongodb/db1:/data/db
+    command: mongod --replSet rp0 --bind_ip_all
+
+  mongo2:
+    restart: always
+    image: mongo:4.4
+    container_name: mongo2
+    expose:
+      - "27017"
+    ports:
+      - "27021:27017"
+    volumes:
+      - ./mongodb/db2:/data/db
+    command: mongod --replSet rp0 --bind_ip_all
+    depends_on:
+      - mongo1
+
+  mongo3:
+    restart: always
+    image: mongo:4.4
+    container_name: mongo3
+    expose:
+      - "27017"
+    ports:
+      - "27022:27017"
+    volumes:
+      - ./mongodb/db3:/data/db
+    command: mongod --replSet rp0 --bind_ip_all
+    depends_on:
+      - mongo1
